@@ -1,12 +1,13 @@
 // import { mongoose } from "@typegoose/typegoose";
 // import { ApolloError } from "apollo-server-express";
-import { Ctx, Query, Resolver } from "type-graphql";
+import { Ctx, Query, Resolver, UseMiddleware } from "type-graphql";
 import Todo from "../../entity/Todo"
 import { TodoModel } from "../../models/todo";
-
+import Auth from "../../middleware/auth"
 
 @Resolver()
 export default class TodoQueryResolver {
+    @UseMiddleware(Auth())
     @Query(() => [Todo])
     async getTodos(
         @Ctx() context: any,) {

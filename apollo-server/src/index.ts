@@ -8,7 +8,8 @@ import TodoDatabase from "./config/db";
 import cors = require("cors");
 import UserQueryResolver from "./resolvers/User/query";
 import UserMutationResolver from "./resolvers/User/mutation";
-import { UserModel } from "./models/user";
+// import { UserModel } from "./models/user";
+import {validationToken} from "./resolvers/validationToken"
 
 (async () => {
     const schema = await buildSchema({
@@ -30,8 +31,10 @@ import { UserModel } from "./models/user";
             let user: any = null
 
             if (req.headers.authorization) {
-                const token = req.headers.authorization;
-                user = await UserModel.findOne({ token: token });
+                const userData = validationToken(req.headers.authorization);
+                if (userData) user = userData
+                // const token = req.headers.authorization;
+                // user = await UserModel.findOne({ token: token });
             }
             return {
                 user,
