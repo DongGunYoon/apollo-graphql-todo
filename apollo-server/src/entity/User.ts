@@ -1,29 +1,25 @@
-import { Prop } from "@typegoose/typegoose";
-import { Field, ObjectType } from "type-graphql";
+import { Prop } from "@typegoose/typegoose"
+import {
+  Field,
+  ObjectType
+} from "type-graphql"
 
 @ObjectType({})
 export default class User {
     @Field(() => String, { nullable: false })
-    _id: string;
+    _id!: string;
 
     @Field(() => String, { nullable: false })
     @Prop({
-        type: String,
-        required: true
+      type: String,
+      required: true
     })
-    userId: string;
+    userId!: string;
 
     @Field(() => String, { nullable: false })
     @Prop({
-        type: String,
-        required: true
+      type: String,
+      required: true
     })
-    userPw: string
-
-    @Field(() => String, { nullable: false })
-    @Prop({
-        type: String,
-        required: true
-    })
-    token: string
+    userPw!: string
 }

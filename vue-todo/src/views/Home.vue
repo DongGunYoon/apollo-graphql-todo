@@ -1,6 +1,6 @@
 <template>
 <div class="home-wrapper">
-  <div class="welcome-title">Welcome {{ name }}!</div>
+  <div class="welcome-title">Welcome!</div>
   <add-todo @add-todo="addTodo"></add-todo>
   <ul>
     <li :key="id" v-for="(todo, id) in filteredTodos">
@@ -32,7 +32,6 @@ export default {
   },
   data() {
     return {
-      name: localStorage.getItem('name'),
       showType: 'all',
       edit:  {
         _id: '',

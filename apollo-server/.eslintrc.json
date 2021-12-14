@@ -1,0 +1,91 @@
+{
+  "env": {
+    "es6": true,
+    "node": true,
+    "jest": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "prettier/@typescript-eslint"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "modules-newline"
+  ],
+  "rules": {
+    "indent": [
+      "error",
+      2
+    ],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "quotes": [
+      "error",
+      "double"
+    ],
+    "semi": [
+      "error",
+      "never"
+    ],
+    "no-unused-vars": 0,
+    "no-console": "off",
+    "no-case-declarations": "off",
+    "no-useless-escape": "off",
+    "no-trailing-spaces": [
+      2,
+      {
+        "skipBlankLines": true
+      }
+    ],
+    "no-multiple-empty-lines": [
+      "error",
+      {
+        "max": 1,
+        "maxEOF": 0
+      }
+    ],
+    "no-useless-catch": 0,
+    "object-curly-newline": [
+      "error",
+      {
+        "ObjectExpression": {
+          "minProperties": 2
+        },
+        "ObjectPattern": "always",
+        "ImportDeclaration": {
+          "multiline": true,
+          "minProperties": 2,
+          "consistent": true
+        },
+        "ExportDeclaration": {
+          "multiline": true,
+          "minProperties": 2
+        }
+      }
+    ],
+    "object-property-newline": "error",
+    "modules-newline/import-declaration-newline": "warn",
+    "modules-newline/export-declaration-newline": "warn"
+  },
+  "overrides": [
+    {
+      "files": ["src/test/*.ts"],
+      "excludedFiles": "test.ts",
+      "rules": {
+        "quotes": ["error", "single"]
+      }
+    }
+  ]
+}

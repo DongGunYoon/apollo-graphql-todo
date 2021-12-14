@@ -173,7 +173,6 @@ export default {
         if (logInResult.getLogInResult === "FAIL") this.errorMsg.logInFail = true
         else {
           localStorage.setItem('token', logInResult.getLogInResult);
-          // localStorage.setItem('name', logInResult.getLogInResult.slice(9));
           this.$router.push({path: 'home'})
         }
       },
@@ -211,11 +210,7 @@ export default {
               addUser(input: {
                 userId: "${userId}"
                 userPw: "${userPw}"
-             }) {
-              userId
-              userPw
-              token
-          }
+             })
         }`
       )
       this.signUpPage = false;

@@ -1,8 +1,0 @@
-query getAllTodos {
-  getAllTodos {
-    name
-    comment
-    completed
-    createdAt
-  }
-}
