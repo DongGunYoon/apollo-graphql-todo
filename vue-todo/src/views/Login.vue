@@ -14,7 +14,7 @@
               v-model="logInInfo.userId"
             />
             <span class="error-message" :class="this.errorMsg.logInUserId ? '' : 'hide'"
-              >Check Your ID</span
+              >ID should be over 4 characters</span
             >
           </div>
 
@@ -28,7 +28,7 @@
               v-model="logInInfo.userPw"
             />
             <span class="error-message" :class="this.errorMsg.logInUserPw ? '' : 'hide'"
-              >Check Your PW</span
+              >PW should be over 6 characters</span
             >
             <span class="error-message" :class="this.errorMsg.logInFail ? '' : 'hide'"
               >No User Available</span
@@ -60,7 +60,7 @@
               v-model="signUpInfo.userId"
             />
             <span class="error-message" :class="this.errorMsg.signUpUserId ? '' : 'hide'"
-              >Check Your ID</span
+              >ID should be over 4 characters</span
             >
           </div>
 
@@ -74,7 +74,7 @@
               v-model="signUpInfo.userPw"
             />
             <span class="error-message" :class="this.errorMsg.signUpUserPw ? '' : 'hide'"
-              >Check Your PW</span
+              >PW should be over 6 characters</span
             >
           </div>
 
@@ -158,8 +158,7 @@ export default {
               
               return
           }
-          this.errorMsg.logInUserId = false
-          this.errorMsg.logInUserPw = false
+          this.errorMsg.logInUserId = this.errorMsg.logInUserPw = false;
 
           const graphQLClient = new GraphQLClient(this.endpoint);
           const logInResult = await graphQLClient.request(
@@ -195,7 +194,6 @@ export default {
         this.errorMsg.signUpUserId = this.errorMsg.signUpUserPw = this.errorMsg.signUpUserRePw = false
         this.signUpInfo.userPw = this.signUpInfo.userId = this.signUpInfo.userRePw = '';
 
-        // if (await request(this.endpoint, this.getUsers).then(data => data.getUsers)) return
         const userIdsObjs = await request(this.endpoint, this.getUsers).then(data => data.getUsers);
         const userExist = userIdsObjs.filter(userIdObj => userIdObj.userId === userId).length
         
