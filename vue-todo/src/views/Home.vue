@@ -50,17 +50,23 @@ export default {
 
     const graphQLClient = new GraphQLClient(this.endpoint, this.header);
 
-    const todos = await graphQLClient.request(
-      gql`query {
-          getTodos{
-            name
-            _id
-            comment
-            completed
-          }
-        }`
-    )
-    this.todos = todos.getTodos
+    try {
+      const todos = await graphQLClient.request(
+        gql`query {
+            getTodos{
+              name
+              _id
+              comment
+              completed
+            }
+          }`
+      )
+      this.todos = todos.getTodos
+    }
+    catch (err) {
+      alert("UnAuthorized!")
+      this.$router.push({path: 'login'})
+    }
   },
 
   computed: {
