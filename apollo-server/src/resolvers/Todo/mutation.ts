@@ -1,7 +1,6 @@
 import Auth from "../../middleware/auth"
 import {
   Arg,
-  Ctx,
   Mutation,
   Resolver,
   UseMiddleware
@@ -24,9 +23,7 @@ export default class TodoMutationResolver {
   @Mutation(() => Boolean)
   @UseMiddleware(Auth())
   async deleteTodo(
-    @Ctx() context: any,
     @Arg("input", () => String) input: string) {
-    if (!context.user) throw new Error("Unauthorized")
     if ((await TodoModel.deleteOne({ "_id": input })).deletedCount) return true
     else return false
   }
@@ -34,9 +31,7 @@ export default class TodoMutationResolver {
   @Mutation(() => Boolean)
   @UseMiddleware(Auth())
   async toggleTodo(
-    @Ctx() context: any,
     @Arg("input", () => String) input: string) {
-    if (!context.user) throw new Error("Unauthorized")
     let type: boolean | undefined
     await TodoModel.findOne({ "_id": input }).then(data => type = data?.completed)
     if ((await TodoModel.updateOne({ "_id": input }, { "completed": !type })).matchedCount) return true
@@ -46,9 +41,7 @@ export default class TodoMutationResolver {
   @Mutation(() => Boolean)
   @UseMiddleware(Auth())
   async updateTodo(
-    @Ctx() context: any,
     @Arg("input", () => UpdateTodoInput) input: UpdateTodoInput) {
-    if (!context.user) throw new Error("Unauthorized")
     if ((await TodoModel.updateOne({ "_id": input._id }, { "comment": input.newComment })).matchedCount) return true
     else return false
   }
