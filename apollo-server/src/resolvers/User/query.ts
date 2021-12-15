@@ -32,7 +32,7 @@ export default class UserQueryResolver {
         userId: user?.userId
       },
       "asdf1234", { expiresIn: "1h" })
-      
+
       return token
     }
 }
