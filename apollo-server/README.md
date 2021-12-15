@@ -31,6 +31,3 @@ yarn run lint
 ### URL Address
 * GrpahQL Playground: <http://localhost:3000/graphql>
 * 클라이언트 주소: <http://localhost:8080/login>
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
