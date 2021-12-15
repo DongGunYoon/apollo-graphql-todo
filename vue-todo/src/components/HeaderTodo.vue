@@ -12,5 +12,6 @@
     color: white;
     text-align: center;
     margin-bottom: 1rem;
+    font-family: 'orbitron';
   }
 </style>
