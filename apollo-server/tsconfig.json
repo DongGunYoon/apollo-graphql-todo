@@ -1,55 +1,54 @@
 {
-    "compilerOptions": {
-      "allowJs": true,
-      "target": "es2018",
-      "outDir": "build",
-      "rootDir": "src",
-      "moduleResolution": "node",
-      "module": "commonjs",
-      "declaration": true,
-      "inlineSourceMap": true,
-      "esModuleInterop": true,
-      "strictNullChecks": true,
-      "strict": true,
-      "noUnusedLocals": true,
-      "noUnusedParameters": true,
-      "noImplicitReturns": true,
-      "noFallthroughCasesInSwitch": true,
-      "traceResolution": false,
-      "listEmittedFiles": false,
-      "listFiles": false,
-      "pretty": true,
-      "experimentalDecorators": true,
-      "emitDecoratorMetadata": true,
-      "lib": [
-        "es2018",
-        //"esnext"
-        "esnext.asynciterable"
-      ],
-      "types": [
-        "node",
-        "jest"
-      ],
-      "typeRoots": [
-        "node_modules/@types",
-        "src/generated"
-      ],
-      "baseUrl": ".",
-      "paths": {
-        // "src/*": [
-        //   "./src/*"
-        // ],
-        "@/*": [
-          "./src/*"
-        ],
-      }
-    },
-    "include": [
-      "src/**/*.ts"
+  "compilerOptions": {
+    "allowJs": true,
+    "target": "es2018",
+    "outDir": "build",
+    "rootDir": "src",
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "declaration": true,
+    "inlineSourceMap": true,
+    "esModuleInterop": true,
+    "strictNullChecks": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "traceResolution": false,
+    "listEmittedFiles": false,
+    "listFiles": false,
+    "pretty": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "lib": [
+      "es2018",
+      //"esnext"
+      "esnext.asynciterable"
     ],
-    "exclude": [
-      "node_modules/**",
-      "src/test/**"
+    "types": [
+      "node",
     ],
-    "compileOnSave": false
-  }
+    "typeRoots": [
+      "node_modules/@types",
+      "src/generated"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      // "src/*": [
+      //   "./src/*"
+      // ],
+      "@/*": [
+        "./src/*"
+      ],
+    }
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules/**",
+    "src/test/**"
+  ],
+  "compileOnSave": false
+}
