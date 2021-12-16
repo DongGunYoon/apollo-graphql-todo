@@ -5,16 +5,15 @@ import {
   UseMiddleware
 } from "type-graphql"
 import Todo from "../../entity/Todo"
-import { TodoModel } from "../../models/todo"
 import Auth from "../../middleware/auth"
+import TodoDao from "../../databases/todoapp/dao/TodoDao"
 
 @Resolver()
 export default class TodoQueryResolver {
-    @UseMiddleware(Auth())
-    @Query(() => [Todo])
+  @UseMiddleware(Auth())
+  @Query(() => [Todo])
   async getTodos(
-    @Ctx() context: any,) {
-    if (!context.user) throw new Error("Unauthorized")
-    return TodoModel.find({ name: context.user.userId })
+  @Ctx() context: any) {
+    return await TodoDao.getTodosByName(context.user.userId)
   }
 }

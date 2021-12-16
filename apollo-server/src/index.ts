@@ -4,11 +4,12 @@ import { ApolloServer } from "apollo-server-express"
 import { buildSchema } from "type-graphql"
 import TodoQueryResolver from "./resolvers/Todo/query"
 import TodoMutationResolver from "./resolvers/Todo/mutation"
-import TodoDatabase from "./config/db"
+import TodoDatabase from "./databases/todoapp/db"
 import cors = require("cors");
 import UserQueryResolver from "./resolvers/User/query"
 import UserMutationResolver from "./resolvers/User/mutation"
 import {validationToken} from "./resolvers/validationToken"
+import TodoApi from "./config"
 
 (async () => {
   const schema = await buildSchema({resolvers: [
@@ -48,7 +49,7 @@ import {validationToken} from "./resolvers/validationToken"
     cors: false,
   })
 
-  app.listen({ port: 3000 }, () => {
+  app.listen({ port: TodoApi.PORT }, () => {
     console.log(`🚀 Server is starting on ${server.graphqlPath} ..`)
   }
   )

@@ -1,6 +1,6 @@
 <template>
 <div class="home-wrapper">
-  <div class="welcome-title">Welcome!</div>
+  <div class="welcome-title">Welcome {{ name }}!</div>
   <add-todo @add-todo="addTodo"></add-todo>
   <ul>
     <li :key="id" v-for="(todo, id) in filteredTodos">
@@ -33,12 +33,12 @@ export default {
   data() {
     return {
       showType: 'all',
+      name: '',
       edit:  {
         _id: '',
         newComment: '',
       },
       token: '',
-      name: '',
       todos: [],
       endpoint: '',
       header: ''
@@ -90,57 +90,79 @@ export default {
     
     async addTodo(comment) {
       const graphQLClient = new GraphQLClient(this.endpoint, this.header);
-      const {addTodo} = await graphQLClient.request(
-        gql`mutation {
-          addTodo(input: {
-            comment: "${comment}"
-            name: "${this.name}"}) 
-          {
+      try {
+           const {addTodo} = await graphQLClient.request(
+            gql`mutation {
+              addTodo(input: {
+                comment: "${comment}"
+                name: "${localStorage.getItem('name')}"}) 
+              {
             _id
             name
             completed
             comment
-          }
-        }`
-      )
+            }
+          }`
+          )
       this.todos.push(addTodo)
+      } catch (error) {
+        this.unauthorized()
+      }
     },
 
     async deleteTodo(_id) {
       const graphQLClient = new GraphQLClient(this.endpoint, this.header);
-      await graphQLClient.request(
-        gql`mutation {deleteTodo(input: "${_id}")}`
-      )
-      this.todos = this.todos.filter(todo => todo._id !==  _id);
+      try {
+        await graphQLClient.request(
+          gql`mutation {deleteTodo(input: "${_id}")}`
+        )
+        this.todos = this.todos.filter(todo => todo._id !==  _id);
+      } catch (error) {
+        this.unauthorized()
+      }
     },
 
     async toggleCompleted(todo) {
       const graphQLClient = new GraphQLClient(this.endpoint, this.header);
-      await graphQLClient.request(
-        gql`mutation {
-          toggleTodo(input: "${todo._id}")
-        }`
-      )
-      todo.completed = !todo.completed;
+      try {
+        await graphQLClient.request(
+          gql`mutation {
+            toggleTodo(input: "${todo._id}")
+          }`
+        )
+        todo.completed = !todo.completed;
+      } catch (error) {
+        this.unauthorized()
+      }
     },
 
     async changeComment(todo) {
       const graphQLClient = new GraphQLClient(this.endpoint, this.header);
-      await graphQLClient.request(
-        gql`mutation {
-          updateTodo(input: {
-            _id: "${todo._id}"
-            newComment: "${this.edit.newComment}"
-          })
-        }`
-      )
-      this.edit._id = '';
-      todo.comment = this.edit.newComment
+      try {
+        await graphQLClient.request(
+          gql`mutation {
+            updateTodo(input: {
+              _id: "${todo._id}"
+              newComment: "${this.edit.newComment}"
+            })
+          }`
+        )
+        this.edit._id = '';
+        todo.comment = this.edit.newComment
+      } catch (error) {
+        this.unauthorized()
+      }
     },
 
     updateTodo(todo) {
       this.edit._id = todo._id;
       this.edit.newComment = todo.comment;
+    },
+
+    unauthorized() {
+      localStorage.clear();
+      this.$router.push({path: 'login'})
+      alert("비정상적인 움직임이 감지되었습니다.")
     }
   }
 };
