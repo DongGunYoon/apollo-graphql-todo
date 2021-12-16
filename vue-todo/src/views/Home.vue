@@ -38,6 +38,7 @@ export default {
         newComment: '',
       },
       token: '',
+      name: '',
       todos: [],
       endpoint: '',
       header: ''
@@ -46,6 +47,7 @@ export default {
   async created() {
     this.endpoint = `http://localhost:3000/graphql`;
     this.token = localStorage.getItem('token');
+    this.name = localStorage.getItem('name');
     this.header = {headers: {"Authorization": localStorage.getItem('token')}}
 
     const graphQLClient = new GraphQLClient(this.endpoint, this.header);
@@ -91,9 +93,9 @@ export default {
       const {addTodo} = await graphQLClient.request(
         gql`mutation {
           addTodo(input: {
-            name: "${this.name}"
             comment: "${comment}"
-          }) {
+            name: "${this.name}"}) 
+          {
             _id
             name
             completed

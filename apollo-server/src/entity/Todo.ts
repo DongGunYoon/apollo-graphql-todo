@@ -35,7 +35,7 @@ export default class Todo {
     @Prop({
       type: Date,
       required: false,
-      default: Date.now()
+      default: Date.now
     })
     createdAt!: Date;
 }

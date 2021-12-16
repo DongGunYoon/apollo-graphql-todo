@@ -13,7 +13,7 @@ export default class TodoQueryResolver {
     @UseMiddleware(Auth())
     @Query(() => [Todo])
   async getTodos(
-        @Ctx() context: any,) {
+    @Ctx() context: any,) {
     if (!context.user) throw new Error("Unauthorized")
     return TodoModel.find({ name: context.user.userId })
   }

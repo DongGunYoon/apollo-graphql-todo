@@ -13,9 +13,7 @@ export default class UserMutationResolver {
   @Mutation(() => Boolean)
   async addUser(
     @Arg("input", () => LogInInput) input: LogInInput) {
-    const userNameExist = await UserModel.findOne({userId: input.userId})
-    if (userNameExist) return false
-        
+    if (await UserModel.exists({userId: input.userId})) return false
     await new UserModel(input).save()
     return true
   }

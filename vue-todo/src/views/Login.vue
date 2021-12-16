@@ -106,7 +106,7 @@
   </div>
 </template>
 <script>
-import { request, GraphQLClient, gql } from "graphql-request";
+import { GraphQLClient, gql } from "graphql-request";
 
 export default {
   name: "Login",
@@ -134,12 +134,6 @@ export default {
       },
       signUpPage: false,
       endpoint: `http://localhost:3000/graphql`,
-      getUsers: 
-      `{
-        getUsers {
-          userId
-          }
-        }`
     }
   },
   methods: {
@@ -168,10 +162,10 @@ export default {
                 userPw: "${userPw}"
              })
             }`)
-
         if (logInResult.getLogInResult === "FAIL") this.errorMsg.logInFail = true
         else {
           localStorage.setItem('token', logInResult.getLogInResult);
+          localStorage.setItem('name', userId)
           this.$router.push({path: 'home'})
         }
       },
@@ -194,16 +188,8 @@ export default {
         this.errorMsg.signUpUserId = this.errorMsg.signUpUserPw = this.errorMsg.signUpUserRePw = false
         this.signUpInfo.userPw = this.signUpInfo.userId = this.signUpInfo.userRePw = '';
 
-        const userIdsObjs = await request(this.endpoint, this.getUsers).then(data => data.getUsers);
-        const userExist = userIdsObjs.filter(userIdObj => userIdObj.userId === userId).length
-        
-        if (userExist) {
-          this.errorMsg.signUpDuplicate = true
-          return
-        }
-
         const graphQLClient = new GraphQLClient(this.endpoint);
-          await graphQLClient.request(
+        const result = await graphQLClient.request(
             gql`mutation {
               addUser(input: {
                 userId: "${userId}"
@@ -211,7 +197,8 @@ export default {
              })
         }`
       )
-      this.signUpPage = false;
+      if (!result.addUser) this.errorMsg.signUpDuplicate = true
+      else this.signUpPage = false;
       }
   }
 };

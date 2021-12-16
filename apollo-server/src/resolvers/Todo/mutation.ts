@@ -7,8 +7,9 @@ import {
 } from "type-graphql"
 import Todo from "../../entity/Todo"
 import { TodoModel } from "../../models/todo"
-import CreateTodoInput from "./todoInput/CreateTodoInput"
+// import CreateTodoInput from "./todoInput/CreateTodoInput"
 import UpdateTodoInput from "./todoInput/UpdateTodoCommentInput"
+import CreateTodoInput from "./todoInput/CreateTodoInput"
 
 @Resolver()
 export default class TodoMutationResolver {
@@ -34,7 +35,7 @@ export default class TodoMutationResolver {
     @Arg("input", () => String) input: string) {
     let type: boolean | undefined
     await TodoModel.findOne({ "_id": input }).then(data => type = data?.completed)
-    if ((await TodoModel.updateOne({ "_id": input }, { "completed": !type })).matchedCount) return true
+    if ((await TodoModel.updateOne({ "_id": input }, {$set: { "completed": !type }})).modifiedCount) return true
     else return false
   }
 
@@ -42,7 +43,7 @@ export default class TodoMutationResolver {
   @UseMiddleware(Auth())
   async updateTodo(
     @Arg("input", () => UpdateTodoInput) input: UpdateTodoInput) {
-    if ((await TodoModel.updateOne({ "_id": input._id }, { "comment": input.newComment })).matchedCount) return true
+    if ((await TodoModel.updateOne({ "_id": input._id }, {$set: { "comment": input.newComment }})).modifiedCount) return true
     else return false
   }
 }

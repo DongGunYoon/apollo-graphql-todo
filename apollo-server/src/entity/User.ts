@@ -16,7 +16,6 @@ export default class User {
     })
     userId!: string;
 
-    @Field(() => String, { nullable: false })
     @Prop({
       type: String,
       required: true
