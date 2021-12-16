@@ -13,6 +13,7 @@ export default class UserMutationResolver {
   @Mutation(() => Boolean)
   async addUser(
     @Arg("input", () => LogInInput) input: LogInInput) {
+    if (await UserDao.exists(input.userId)) return false
     return await UserDao.addUser(input)
   }
 }

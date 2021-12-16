@@ -19,8 +19,7 @@ export default class TodoMutationResolver {
   async addTodo(
     @Arg("input", () => CreateTodoInput) input: CreateTodoInput,
     @Ctx() context: any) {
-    if (!await TodoDao.validationCheckByName(input.name, context.user.userId)) throw new ApolloError("Abnormal Active Detected!")
-    return await TodoDao.addTodo(input)
+    return input.name === context.user.userId ? await TodoDao.addTodo(input) : new ApolloError("Abnormal Active Detected!")
   }
 
   @Mutation(() => Boolean)
