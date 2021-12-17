@@ -45,7 +45,7 @@ export default {
     };
   },
   async created() {
-    this.endpoint = `http://localhost:3000/graphql`;
+    this.endpoint = `http://localhost:3000/todo`;
     this.token = localStorage.getItem('token');
     this.name = localStorage.getItem('name');
     this.header = {headers: {"Authorization": localStorage.getItem('token')}}

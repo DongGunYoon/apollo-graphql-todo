@@ -133,7 +133,7 @@ export default {
           signUpDuplicate: false
       },
       signUpPage: false,
-      endpoint: `http://localhost:3000/graphql`,
+      endpoint: `http://localhost:3000/user`,
     }
   },
   methods: {
@@ -326,7 +326,17 @@ export default {
     background-color: #fff;
     width: 60%;
     height: 80%;
-    transform: translateX(-50%);
+    animation: active-sign-up-ani 1.5s forwards;
+}
+
+@keyframes active-sign-up-ani {
+  0% {
+    transform: translateX(-50%) scaleY(0);
+  }
+
+  100% {
+    transform: translateX(-50%) scaleY(1);
+  }
 }
 
 .signup-form-btns {
