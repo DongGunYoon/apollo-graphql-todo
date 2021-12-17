@@ -1,5 +1,5 @@
-import { validationToken } from "../../resolvers/validationToken"
 import { ApolloServer } from "apollo-server-express"
+import { validationToken } from "@/resolvers/validationToken"
 import TodoSchema from "./TodoSchema"
 
 const create = async (app: any) => {
@@ -7,7 +7,7 @@ const create = async (app: any) => {
   const server = new ApolloServer({
     schema,
     context: ({
-      req, res
+      req
     }: any) => {
       let user: any = null
   
@@ -18,7 +18,6 @@ const create = async (app: any) => {
       return {
         user,
         req,
-        res,
       }
     }
   })

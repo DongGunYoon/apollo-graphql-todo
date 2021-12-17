@@ -1,9 +1,11 @@
+require("module-alias").addAliases({ "@": __dirname })
+
+import http from "http"
 import "reflect-metadata"
 import express from "express"
-import TodoApi from "./config"
-import TodoServer from "./servers/Todo/TodoServer"
-import UserServer from "./servers/User/UserServer"
-import http from "http"
+import TodoApi from "@/config"
+import TodoServer from "@/servers/Todo/TodoServer"
+import UserServer from "@/servers/User/UserServer"
 
 const createServer = async (app: any) => {
   await TodoServer(app)
