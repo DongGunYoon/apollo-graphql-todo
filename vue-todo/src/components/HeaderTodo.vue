@@ -1,17 +1,20 @@
 <template>
 <header>
     <h1>TODO APP</h1>
+    <slot></slot>
 </header>
 </template>
 
 <style scoped>
-  header {
+  h1 {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-    padding: 0.5rem;
-    background-color: #880017;
-    color: white;
+    padding: 1rem;
+    background-color: #FFEF6A;
+    color: black;
     text-align: center;
-    margin-bottom: 1rem;
+    margin: 0;
+    margin-bottom: 1em;
     font-family: 'orbitron';
+    min-width: 700px;
   }
 </style>
