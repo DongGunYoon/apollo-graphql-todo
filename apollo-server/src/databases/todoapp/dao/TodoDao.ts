@@ -19,8 +19,10 @@ class TodoDao {
     return (tokenName === todo)
   }
 
-  async addTodo(input: CreateTodoInput) {
-    return await new TodoModel(input).save()
+  async addTodo(input: CreateTodoInput, userId: string): Promise<Todo>{
+    const todo = await new TodoModel(input)
+    todo.name = userId
+    return todo.save()
   }
 
   async deleteTodo(_id: string): Promise<boolean>{
