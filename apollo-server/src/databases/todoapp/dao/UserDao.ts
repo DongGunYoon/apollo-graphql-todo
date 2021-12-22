@@ -1,22 +1,26 @@
 import { Dao } from "../../common/decorators"
 import { UserModel } from "../models/user"
-import * as jwt from "jsonwebtoken"
 import LogInInput from "../../../resolvers/User/userInput/LogInInput"
-import TodoApi from "../../../config"
 import User from "@/entity/User"
 
 @Dao(UserModel)
 class UserDao {
-  async exists(input: string): Promise<User | null>{
-    return await UserModel.findOne({userId: input})
+  async isValidId(userId: string): Promise<boolean> {
+    if (await UserModel.findOne({"userId": userId})) return false
+    return true
   }
 
-  generateToken(_id: string, userId: string): string {
-    return jwt.sign({
-      _id: _id,
-      userId: userId
-    },
-    TodoApi.LOGIN_SECRET, { expiresIn: "1h" })
+  async getAllNicknames(): Promise<string[]> {
+    const usersNickname = await UserModel.find({},{
+      _id:0,
+      nickname: 1
+    })
+
+    return usersNickname.map(res => res.nickname)
+  }
+
+  async matchedUser(userId: string, userPw: string): Promise<User | null>{
+    return await UserModel.findOne({$and : [{"userId": userId}, {"userPw": userPw}]})
   }
 
   async addUser(input: LogInInput): Promise<boolean> {

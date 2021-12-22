@@ -4,6 +4,9 @@ class TodoConfig {
 
     // LogIn
     LOGIN_SECRET: string = "nlfdnmlk1kdsalf12bninjkn3412ikfn"
+
+    // Geolocation API KEY
+    GEO_API_KEY: string = "AIzaSyCSlNL9fzlJEpWASL5vQA_w2wN4bPASsKs"
 }
 
 const config = new TodoConfig()

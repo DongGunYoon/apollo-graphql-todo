@@ -9,12 +9,33 @@ export default class Todo {
     @Field(() => String, { nullable: false })
     _id!: string;
 
+    @Field(() => String, {nullable: false})
+    @Prop({
+      type: String,
+      required: true
+    })
+    latitude!: string;
+    
+    @Field(() => String, {nullable: false})
+    @Prop({
+      type: String,
+      required: true
+    })
+    longitude!: string;
+
     @Field(() => String, { nullable: false })
     @Prop({
       type: String,
       required: true
     })
     name!: string;
+
+    @Field(() => String, {nullable: false})
+    @Prop({
+      type: String,
+      required: true
+    })
+    address!: string;
 
     @Field(() => String, { nullable: false })
     @Prop({

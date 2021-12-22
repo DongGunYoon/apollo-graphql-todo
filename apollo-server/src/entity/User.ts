@@ -21,4 +21,11 @@ export default class User {
       required: true
     })
     userPw!: string
+    
+    @Field(() => String, { nullable: false })
+    @Prop({
+      type: String,
+      required: true
+    })
+    nickname!: string
 }

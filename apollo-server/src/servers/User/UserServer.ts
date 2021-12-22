@@ -8,7 +8,6 @@ const create = async (app: any) => {
     context: async ({
       req, res
     }: any) => {
-  
       return {
         req,
         res,
@@ -21,8 +20,6 @@ const create = async (app: any) => {
     path: "/user",
     cors: true,
   })
-
-  console.log(`🚀Server is starting on ${server.graphqlPath}...`)
 }
 
 export default create

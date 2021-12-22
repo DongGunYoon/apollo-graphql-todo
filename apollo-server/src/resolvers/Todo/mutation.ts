@@ -9,8 +9,7 @@ import {
 import Todo from "../../entity/Todo"
 import UpdateTodoInput from "./todoInput/UpdateTodoCommentInput"
 import CreateTodoInput from "./todoInput/CreateTodoInput"
-import TodoDao from "../../databases/todoapp/dao/TodoDao"
-import { ApolloError } from "apollo-server-express"
+import TodoService from "@/services/todo/TodoService"
 
 @Resolver()
 export default class TodoMutationResolver {
@@ -19,7 +18,7 @@ export default class TodoMutationResolver {
   async addTodo(
     @Arg("input", () => CreateTodoInput) input: CreateTodoInput,
     @Ctx() context: any) {
-    return await TodoDao.addTodo(input, context.user.userId)
+    return await TodoService.addTodo(input, context.user.userId)
   }
 
   @Mutation(() => Boolean)
@@ -27,8 +26,7 @@ export default class TodoMutationResolver {
   async deleteTodo(
     @Arg("input", () => String) input: string,
     @Ctx() context: any) {
-    if (!await TodoDao.validationCheckById(input, context.user.userId)) throw new ApolloError("Abnormal Active Detected!")
-    return await TodoDao.deleteTodo(input)
+    return await TodoService.deleteTodo(input, context.user.userId)
   }
   
   @Mutation(() => Boolean)
@@ -36,8 +34,7 @@ export default class TodoMutationResolver {
   async toggleTodo(
     @Arg("input", () => String) input: string,
     @Ctx() context: any) {
-    if (!await TodoDao.validationCheckById(input, context.user.userId)) throw new ApolloError("Abnormal Active Detected!")
-    return await TodoDao.toggleTodo(input)
+    return await TodoService.toggleTodo(input, context.user.userId)
   }
 
   @Mutation(() => Boolean)
@@ -45,7 +42,6 @@ export default class TodoMutationResolver {
   async updateTodo(
     @Arg("input", () => UpdateTodoInput) input: UpdateTodoInput,
     @Ctx() context: any) {
-    if (!await TodoDao.validationCheckById(input._id, context.user.userId)) throw new ApolloError("Abnormal Active Detected!")
-    return await TodoDao.updateTodo(input._id, input.newComment)
+    return await TodoService.updateTodo(input._id, context.user.userId, input.newComment)
   }
 }

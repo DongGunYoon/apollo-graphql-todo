@@ -4,25 +4,18 @@ import { Dao } from "../../common/decorators"
 import { TodoModel } from "../models/todo"
 
 @Dao(TodoModel)
-
 class TodoDao {
   async getTodosByName(name: string): Promise<Todo[]> {
     return await TodoModel.find({name: name})
   }
 
-  validationCheckByName(clientName: string, tokenName: string): boolean {
-    return (clientName === tokenName)
+  async getUserNameById(_id: string): Promise<string | undefined> {
+    const userName = await TodoModel.findOne({"_id": _id}).then(res => res?.name)
+    return userName
   }
 
-  async validationCheckById(_id: string, tokenName: string): Promise<boolean>{
-    const todo = (await TodoModel.findOne({_id: _id}))?.name
-    return (tokenName === todo)
-  }
-
-  async addTodo(input: CreateTodoInput, userId: string): Promise<Todo>{
-    const todo = await new TodoModel(input)
-    todo.name = userId
-    return todo.save()
+  async createDefaultTodo(input: CreateTodoInput): Promise<Todo> {
+    return new TodoModel(input)
   }
 
   async deleteTodo(_id: string): Promise<boolean>{
@@ -30,9 +23,13 @@ class TodoDao {
     return true
   }
 
-  async toggleTodo(_id: string): Promise<boolean> {
+  async getCompletedType(_id: string): Promise<boolean> {
     let type: boolean | undefined
     await TodoModel.findOne({ _id: _id }).then(data => type = data?.completed)
+    return type ? true : false
+  }
+
+  async toggleTodo(_id: string, type: boolean): Promise<boolean> {
     if (!(await TodoModel.updateOne({ _id: _id }, {$set: { "completed": !type }})).modifiedCount) return false
     return true
   }

@@ -7,7 +7,7 @@ const create = async (app: any) => {
   const server = new ApolloServer({
     schema,
     context: ({
-      req
+      req, res
     }: any) => {
       let user: any = null
   
@@ -18,6 +18,7 @@ const create = async (app: any) => {
       return {
         user,
         req,
+        res
       }
     }
   })
