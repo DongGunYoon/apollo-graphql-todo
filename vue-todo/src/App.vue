@@ -24,7 +24,7 @@ export default {
 }
 
 html {
-  font-family: "Jost", sans-serif;
+  font-family: "orbitron", sans-serif;
 }
 
 @font-face {

@@ -46,7 +46,7 @@
         </fieldset>
       </form>
       <div class="sign-up-wrapper" :class="signUpPage ? '' : 'hide'">
-          <form action="" @submit.prevent="addUser(signUpInfo.userId, signUpInfo.userPw)">
+          <form action="" @submit.prevent="addUser(signUpInfo.userId, signUpInfo.userPw, signUpInfo.nickname)">
               <fieldset>
           <legend class="login-form-title login-form-common signup-title">Let's Sign Up</legend>
 
@@ -61,6 +61,20 @@
             />
             <span class="error-message" :class="this.errorMsg.signUpUserId ? '' : 'hide'"
               >ID should be over 4 characters</span
+            >
+          </div>
+
+          <div class="user-nickname-wrapper">
+            <label for="signUpNickname" class="login-label">Nickname :</label>
+            <input
+              type="text"
+              class="user-nickname-input login-form-common"
+              id="signUpNickname"
+              name="signUpNickname"
+              v-model="signUpInfo.nickname"
+            />
+            <span class="error-message" :class="this.errorMsg.signUpNickname ? '' : 'hide'"
+              >Nickname should be over 4 characters</span
             >
           </div>
 
@@ -115,10 +129,12 @@ export default {
       logInInfo: {
         userId: '',
         userPw: '',
+        nickname: '',
       },
 
       signUpInfo: {
         userId: '',
+        nickname: '',
         userPw: '',
         userRePw: '',
       },
@@ -128,6 +144,7 @@ export default {
           logInUserPw: false,
           logInFail: false,
           signUpUserId: false,
+          signUpNickname: false,
           signUpUserPw: false,
           signUpUserRePw: false,
           signUpDuplicate: false
@@ -170,10 +187,13 @@ export default {
         }
       },
 
-      async addUser(userId, userPw) {
+      async addUser(userId, userPw, nickname) {
         if (this.signUpInfo.userId.length < 4 || this.signUpInfo.userPw.length < 6 || this.signUpInfo.userRePw !== this.signUpInfo.userPw) {
               if (this.signUpInfo.userId.length < 4) this.errorMsg.signUpUserId = true
               else this.errorMsg.signUpUserId = false
+              
+              if (this.signUpInfo.nickname.length < 4) this.errorMsg.signUpNickname = true
+              else this.errorMsg.signUpNickname = false
 
               if (this.signUpInfo.userPw.length < 6) this.errorMsg.signUpUserPw = true
               else this.errorMsg.signUpUserPw = false
@@ -185,8 +205,8 @@ export default {
         }
 
         // Error 메시지와 SignUp Info 초기화
-        this.errorMsg.signUpUserId = this.errorMsg.signUpUserPw = this.errorMsg.signUpUserRePw = false
-        this.signUpInfo.userPw = this.signUpInfo.userId = this.signUpInfo.userRePw = '';
+        this.errorMsg.signUpUserId = this.errorMsg.signUpNickname = this.errorMsg.signUpUserPw = this.errorMsg.signUpUserRePw = false
+        this.signUpInfo.userPw = this.signUpInfo.userId = this.signUpInfo.userRePw = this.signUpInfo.nickname = '';
 
         const graphQLClient = new GraphQLClient(this.endpoint);
         const result = await graphQLClient.request(
@@ -194,6 +214,7 @@ export default {
               addUser(input: {
                 userId: "${userId}"
                 userPw: "${userPw}"
+                nickname: "${nickname}"
              })
         }`
       )
@@ -252,6 +273,7 @@ export default {
 }
 
 .user-id-wrapper,
+.user-nickname-wrapper,
 .user-pw-wrapper {
   position: relative;
   width: 90%;
@@ -260,6 +282,7 @@ export default {
 }
 
 .user-id-wrapper input,
+.user-nickname-wrapper input,
 .user-pw-wrapper input{
   width: 100%;
   padding-left: 160px;
@@ -274,14 +297,9 @@ export default {
     font-weight: 700;
 }
 
-.user-id-input {
-  border: none;
-  width: 80%;
-  padding-left: 40px;
-  font-size: 1rem;
-}
-
-.user-pw-input {
+.user-id-input,
+.user-pw-input,
+.user-nickname-input {
   border: none;
   width: 80%;
   padding-left: 40px;

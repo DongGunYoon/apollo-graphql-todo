@@ -1,8 +1,9 @@
 <template>
+<div>
 <div class="home-wrapper">
   <div class="welcome-title">Welcome {{ name }}!</div>
   <add-todo @add-todo="addTodo"></add-todo>
-  <ul>
+  <ul class="todo-list">
     <li :key="id" v-for="(todo, id) in filteredTodos">
     <input @click="toggleCompleted(todo)" :checked="todo.completed" class="check-box" type="checkbox"/>
     <label @dblclick="updateTodo(todo)">
@@ -15,6 +16,7 @@
   </ul>
   <filter-buttons @showTodo="showTodo"></filter-buttons>
 </div>
+</div>
 </template>
 
 <script>
@@ -22,17 +24,22 @@ import 'vue-apollo'
 import AddTodo from "../components/AddTodo.vue";
 import FilterButtons from "../components/FilterButtons.vue"
 import { GraphQLClient, gql } from "graphql-request";
-
+import axios from 'axios'
 
 export default {
   name: "Home",
   components: {
     "add-todo": AddTodo,
-    "filter-buttons": FilterButtons
+    "filter-buttons": FilterButtons,
   },
   data() {
     return {
+      location: {
+        latitude: '',
+        longitude: ''
+      },
       showType: 'all',
+      matchedNicknames: [],
       name: '',
       edit:  {
         _id: '',
@@ -41,10 +48,31 @@ export default {
       token: '',
       todos: [],
       endpoint: '',
-      header: ''
+      header: '',
     };
   },
-  async created() {
+  async created() {    
+   function getPosition() {
+      return new Promise((resolve, reject) => 
+        navigator.geolocation.getCurrentPosition(resolve, reject)
+      );
+    }
+    
+    getPosition()
+    .then((position) => {
+      this.location.latitude = position.coords.latitude
+      this.location.longitude = position.coords.longitude
+    })
+    .catch(() => {
+      axios.request('http://ip.jsontest.com/').then(res => {
+        axios.request('http://ip-api.com/json/'+res.data.ip).then(res=> {
+          this.location.latitude = res.data.lat
+          this.location.longitude = res.data.lon
+        })
+      })
+    });
+
+
     this.endpoint = `http://localhost:3000/todo`;
     this.token = localStorage.getItem('token');
     this.name = localStorage.getItem('name');
@@ -56,8 +84,8 @@ export default {
       const todos = await graphQLClient.request(
         gql`query {
             getTodos{
-              name
               _id
+              name
               comment
               completed
             }
@@ -89,18 +117,27 @@ export default {
     },
     
     async addTodo(comment) {
+      if (this.location.latitude === '' || this.location.longitude === '') {
+        alert("Please try again in 5 secs...")
+        return
+      }
+
       const graphQLClient = new GraphQLClient(this.endpoint, this.header);
       try {
            const {addTodo} = await graphQLClient.request(
             gql`mutation {
               addTodo(input: {
                 comment: "${comment}"
-                name: "${localStorage.getItem('name')}"}) 
+                name: "${localStorage.getItem('name')}"
+                latitude: "${this.location.latitude}"
+                longitude: "${this.location.longitude}"
+                }) 
               {
             _id
             name
             completed
             comment
+            address
             }
           }`
           )
@@ -206,7 +243,7 @@ body {
   cursor: pointer;
 }
 
-li {
+.todo-list > li {
   list-style: none;
   position: relative;
   height: 80px;
@@ -218,7 +255,7 @@ li {
   box-shadow: inset -4px -2px 2px rgb(0 0 0 / 20%);
 }
 
-li label {
+.todo-list > li label {
   word-break: break-all;
   padding: 15px 15px 15px 70px;
   display: block;
@@ -248,6 +285,23 @@ li label {
 
 .hide {
   display: none;
+}
+
+.userSearch {
+    width: 60%;
+    margin: 10px auto;
+}
+
+#searchInput {
+  font-family: 'orbitron';
+  font-size: 24px;
+  width: 100%;
+  padding: 16px 16px 16px 60px;
+  border-radius: 10px;
+  border: 0.1px solid grey;
+  background: rgba(0, 0, 0, 0.003);
+  box-shadow: inset 0 -2px 1px rgb(0 0 0 / 20%);
+  margin-bottom: 1.5em;
 }
 
 </style>
