@@ -52,27 +52,12 @@ export default {
     };
   },
   async created() {    
-   function getPosition() {
+   const getPosition = () => {
       return new Promise((resolve, reject) => 
         navigator.geolocation.getCurrentPosition(resolve, reject)
       );
     }
-    
-    getPosition()
-    .then((position) => {
-      this.location.latitude = position.coords.latitude
-      this.location.longitude = position.coords.longitude
-    })
-    .catch(() => {
-      axios.request('http://ip.jsontest.com/').then(res => {
-        axios.request('http://ip-api.com/json/'+res.data.ip).then(res=> {
-          this.location.latitude = res.data.lat
-          this.location.longitude = res.data.lon
-        })
-      })
-    });
-
-
+  
     this.endpoint = `http://localhost:3000/todo`;
     this.token = localStorage.getItem('token');
     this.name = localStorage.getItem('name');
@@ -97,6 +82,22 @@ export default {
       alert("UnAuthorized!")
       this.$router.push({path: 'login'})
     }
+
+    await getPosition()
+    .then((position) => {
+      this.location.latitude = position.coords.latitude
+      this.location.longitude = position.coords.longitude
+    })
+    .catch(() => {
+      axios.request('http://ip.jsontest.com/')
+      .then(res => {
+        axios.request('http://ip-api.com/json/'+res.data.ip)
+        .then(res=> {
+          this.location.latitude = res.data.lat
+          this.location.longitude = res.data.lon
+        })
+      })
+    });
   },
 
   computed: {

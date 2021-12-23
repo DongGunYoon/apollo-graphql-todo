@@ -14,7 +14,7 @@ class TodoDao {
     return userName
   }
 
-  async createDefaultTodo(input: CreateTodoInput): Promise<Todo> {
+  createDefaultTodo(input: CreateTodoInput): Todo {
     return new TodoModel(input)
   }
 

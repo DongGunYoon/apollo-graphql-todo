@@ -30,7 +30,7 @@ export default class TodoService {
   }
 
   static async addTodo(input: CreateTodoInput, tokenId: string): Promise<Todo> {
-    const todo = await TodoDao.createDefaultTodo(input)
+    const todo = TodoDao.createDefaultTodo(input)
     todo.name = tokenId
     todo.address = await this.getAddress(input.latitude, input.longitude)
     await TodoModel.create(todo)
