@@ -1,0 +1,15 @@
+# ---------- #
+FROM node:14.18.1
+
+COPY . /
+
+RUN yarn
+RUN yarn build
+
+EXPOSE 3000
+
+CMD ["node", "./build/index.js"]
+
+# 도커 실행 시 docker run -d -it -p 3000(원하는 포트 주소):3000 apollo-server 방식으로 구동하기
+# docker build -t apollo-server
+# docker run -d -it -p 3000:3000 apollo-server

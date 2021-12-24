@@ -1,0 +1,14 @@
+# ---------- #
+FROM node:14.18.1
+
+COPY . /
+
+RUN yarn
+
+EXPOSE 8080
+
+CMD ["yarn", "start"]
+
+# 도커 실행 시 docker run -d -it -p 8080(원하는 포트 주소):8080 vue-todo 방식으로 구동하기
+# docker build -t vue-todo
+# docker run -d -it -p 8080:8080 vue-todo
