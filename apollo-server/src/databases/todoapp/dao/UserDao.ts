@@ -6,8 +6,7 @@ import User from "@/entity/User"
 @Dao(UserModel)
 class UserDao {
   async isValidId(userId: string): Promise<boolean> {
-    if (await UserModel.findOne({"userId": userId})) return false
-    return true
+    return !await UserModel.exists({"userId": userId})
   }
 
   async getAllNicknames(): Promise<string[]> {
@@ -23,9 +22,8 @@ class UserDao {
     return await UserModel.findOne({$and : [{"userId": userId}, {"userPw": userPw}]})
   }
 
-  async addUser(input: LogInInput): Promise<boolean> {
+  async addUser(input: LogInInput): Promise<void> {
     await new UserModel(input).save()
-    return true
   }
 }
 

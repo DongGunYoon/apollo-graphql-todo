@@ -39,7 +39,7 @@ export default class TodoService {
   
   static async deleteTodo(_id: string, tokenId: string): Promise<boolean> {
     if (!await this.validationCheckById(_id, tokenId)) throw new ApolloError("Abnormal Active Detected!")
-    return TodoDao.deleteTodo(_id)
+    return await TodoDao.deleteTodo(_id)
   }
 
   static async validationCheckById(_id: string, tokenId: string): Promise<boolean> {

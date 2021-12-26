@@ -89,15 +89,15 @@ export default {
       this.location.longitude = position.coords.longitude
     })
     .catch(() => {
-      axios.request('http://ip.jsontest.com/')
-      .then(res => {
-        axios.request('http://ip-api.com/json/'+res.data.ip)
-        .then(res=> {
-          this.location.latitude = res.data.lat
-          this.location.longitude = res.data.lon
-        })
-      })
-    });
+      return axios.request('http://ip.jsontest.com/')
+    })
+    .then(res => {
+      return axios.request('http://ip-api.com/json/'+res.data.ip)
+    })
+    .then(res=> {
+      this.location.latitude = res.data.lat
+      this.location.longitude = res.data.lon
+    })
   },
 
   computed: {
