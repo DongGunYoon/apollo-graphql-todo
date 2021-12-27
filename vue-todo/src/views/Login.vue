@@ -35,7 +35,7 @@
             >
           </div>
 
-          <div class="login-form-btns">
+          <div class="form-btns">
             <button @click="logIn" type="submit" class="form-btn login-form-common">
               LOGIN
             </button>
@@ -109,9 +109,12 @@
             >
           </div>
 
-          <div class="signup-form-btns">
-            <button type="submit" class="form-btn login-form-common singup-btn">
-              Sign Up
+          <div class="form-btns">
+            <button @click="showSignUp" type="reset" class="form-btn login-form-common">
+              BACK
+            </button>
+            <button type="submit" class="form-btn login-form-common">
+              SIGN UP
             </button>
           </div>
         </fieldset>
@@ -155,7 +158,10 @@ export default {
   },
   methods: {
       showSignUp() {
-          this.signUpPage = !this.signUpPage;
+        Object.keys(this.errorMsg).forEach(key => this.errorMsg[key] = false)
+        Object.keys(this.logInInfo).forEach(key => this.logInInfo[key] = '')
+        Object.keys(this.signUpInfo).forEach(key => this.signUpInfo[key] = '')
+        this.signUpPage = !this.signUpPage;
       },
 
       async logInSubmit(userId, userPw) {
@@ -316,7 +322,7 @@ export default {
     margin-bottom: 20px;
 }
 
-.login-form-btns {
+.form-btns {
   display: flex;
   justify-content: space-between;
   margin: 30px auto;
