@@ -12,7 +12,6 @@
 export default {
   methods: {
     movePage(type) {
-      console.log("CLICKED")
       this.$router.push({path: type})
     }
   }
