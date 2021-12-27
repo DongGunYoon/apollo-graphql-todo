@@ -31,8 +31,7 @@ class TodoDao {
   }
 
   async deleteTodo(_id: string): Promise<boolean> {
-    if (!await TodoModel.deleteOne({_id: _id}).deletedCount) return false
-    return true
+    return !!(await TodoModel.deleteOne({_id: _id})).deletedCount
   }
 
   async getCompletedType(_id: string): Promise<boolean> {
