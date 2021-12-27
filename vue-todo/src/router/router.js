@@ -19,7 +19,8 @@ const routes = [
     component: () => import('@/views/Friend'),
   },
   {
-    path: '/login',
+    path: '/',
+    alias: '/login',
     name: 'Login',
     component: () => import('@/views/Login'),
   },
