@@ -3,6 +3,7 @@ node_modules
 /dist
 .eslintrc.*
 build
+config.ts
 
 
 # local env files
