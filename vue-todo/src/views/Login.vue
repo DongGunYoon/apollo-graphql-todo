@@ -153,7 +153,7 @@ export default {
           signUpDuplicate: false
       },
       signUpPage: false,
-      endpoint: `http://localhost:3000/user`,
+      endpoint: `https://todo-api.why.auoi.net/user`,
     }
   },
   methods: {
@@ -225,7 +225,7 @@ export default {
         }`
       )
       if (!result.addUser) this.errorMsg.signUpDuplicate = true
-      else this.signUpPage = false;
+      else this.showSignUp()
       }
   }
 };

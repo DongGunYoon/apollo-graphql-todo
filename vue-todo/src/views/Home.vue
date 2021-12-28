@@ -58,7 +58,7 @@ export default {
       );
     }
   
-    this.endpoint = `http://localhost:3000/todo`;
+    this.endpoint = `https://todo-api.why.auoi.net/todo`;
     this.token = localStorage.getItem('token');
     this.name = localStorage.getItem('name');
     this.header = {headers: {"Authorization": localStorage.getItem('token')}}
@@ -118,6 +118,7 @@ export default {
     },
     
     async addTodo(comment) {
+      if (comment.replace(/ /gi, "").length === 0) return
       if (this.location.latitude === '' || this.location.longitude === '') {
         alert("Please try again in 5 secs...")
         return
