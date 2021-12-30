@@ -1,5 +1,5 @@
 import * as jwt from "jsonwebtoken"
-import TodoApi from "../config"
+import TodoApi from "@/config"
 
 export const validationToken = (token: string) => {
   try {

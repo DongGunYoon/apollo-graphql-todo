@@ -24,6 +24,8 @@ export default class UserService {
 
   static async addUser(input: SignUpInput): Promise<boolean> {
     if (! await UserDao.isValidId(input.userId)) return false
+    if (! await UserDao.isValidNickname(input.nickname)) return false
+
     await UserDao.addUser(input)
     return true
   }

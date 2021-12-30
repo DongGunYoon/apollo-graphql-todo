@@ -6,7 +6,7 @@ import {
 @InputType()
 export default class CreateTodoInput {
     @Field(() => String, { nullable: false })
-    name!: string;
+    nickname!: string;
 
     @Field(() => String, { nullable: false })
     comment!: string
