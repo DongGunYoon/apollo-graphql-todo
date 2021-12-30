@@ -6,7 +6,7 @@ export default function Auth(): MiddlewareFn<any> {
     context
   }: {context:any}, next: any) => {
     if (!context.user) {
-      throw new ApolloError("Unauthorized!")
+      throw new ApolloError("Unauthorized!", "401")
     }
     return next()
   }

@@ -18,7 +18,7 @@ export default class TodoMutationResolver {
   async addTodo(
     @Arg("input", () => CreateTodoInput) input: CreateTodoInput,
     @Ctx() context: any) {
-    return await TodoService.addTodo(input, context.user.userId)
+    return await TodoService.addTodo(input, context.user.nickname)
   }
 
   @Mutation(() => Boolean)
@@ -26,7 +26,7 @@ export default class TodoMutationResolver {
   async deleteTodo(
     @Arg("input", () => String) input: string,
     @Ctx() context: any) {
-    return await TodoService.deleteTodo(input, context.user.userId)
+    return await TodoService.deleteTodo(input, context.user.nickname)
   }
   
   @Mutation(() => Boolean)
@@ -34,7 +34,7 @@ export default class TodoMutationResolver {
   async toggleTodo(
     @Arg("input", () => String) input: string,
     @Ctx() context: any) {
-    return await TodoService.toggleTodo(input, context.user.userId)
+    return await TodoService.toggleTodo(input, context.user.nickname)
   }
 
   @Mutation(() => Boolean)
@@ -42,6 +42,6 @@ export default class TodoMutationResolver {
   async updateTodo(
     @Arg("input", () => UpdateTodoInput) input: UpdateTodoInput,
     @Ctx() context: any) {
-    return await TodoService.updateTodo(input._id, context.user.userId, input.newComment)
+    return await TodoService.updateTodo(input._id, context.user.nickname, input.newComment)
   }
 }

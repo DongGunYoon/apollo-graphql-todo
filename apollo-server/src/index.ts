@@ -6,10 +6,12 @@ import express from "express"
 import TodoApi from "@/config"
 import TodoServer from "@/servers/Todo/TodoServer"
 import UserServer from "@/servers/User/UserServer"
+import FriendServer from "./servers/Friend/FriendServer"
 
 const createServer = async (app: any) => {
   await TodoServer(app)
   await UserServer(app)
+  await FriendServer(app)
 }
 
 const startServer = async (app: any) => {

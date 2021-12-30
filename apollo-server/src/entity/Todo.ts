@@ -28,7 +28,7 @@ export default class Todo {
       type: String,
       required: true
     })
-    name!: string;
+    nickname!: string;
 
     @Field(() => String, {nullable: false})
     @Prop({

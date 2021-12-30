@@ -1,5 +1,5 @@
 <template>
-<header>
+<header class="header">
     <ul class="navigation-list">
         <li @click="movePage('login')" class="link">LogIn</li>
         <li @click="movePage('home')"><h1>TODO APP</h1></li>
@@ -19,6 +19,7 @@ export default {
 </script>
 
 <style scoped>
+
 .navigation-list {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
     background-color: #FFEF6A;

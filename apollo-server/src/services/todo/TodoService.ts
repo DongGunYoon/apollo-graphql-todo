@@ -1,4 +1,3 @@
-import UserDao from "@/databases/todoapp/dao/UserDao"
 import Todo from "@/entity/Todo"
 import CreateTodoInput from "@/resolvers/Todo/todoInput/CreateTodoInput"
 import { Service } from "typedi"
@@ -10,15 +9,6 @@ import { ApolloError } from "apollo-server-express"
 
 @Service()
 export default class TodoService {
-  static async getUsersNickname(input: string): Promise<string[]> {
-    const usersNickname = await UserDao.getAllNicknames()
-    const result = []
-    const reg = new RegExp(input, "i")
-    for (const userNickname of usersNickname) {
-      if (userNickname.match(reg)?.length) result.push(userNickname)
-    }
-    return result
-  }
 
   static async getAddress(latitude: string, longitude: string): Promise<string> {
     let address = ""
@@ -29,22 +19,22 @@ export default class TodoService {
     return address
   }
 
-  static async addTodo(input: CreateTodoInput, tokenId: string): Promise<Todo> {
+  static async addTodo(input: CreateTodoInput, tokenNickname: string): Promise<Todo> {
     const todo = TodoDao.createDefaultTodo(input)
-    todo.name = tokenId
+    todo.nickname = tokenNickname
     todo.address = await this.getAddress(input.latitude, input.longitude)
     await TodoModel.create(todo)
     return todo
   }
   
-  static async deleteTodo(_id: string, tokenId: string): Promise<boolean> {
-    if (!await this.validationCheckById(_id, tokenId)) throw new ApolloError("Abnormal Active Detected!")
+  static async deleteTodo(_id: string, tokenNickname: string): Promise<boolean> {
+    if (!await this.validationCheckById(_id, tokenNickname)) throw new ApolloError("Abnormal Active Detected!")
     return await TodoDao.deleteTodo(_id)
   }
 
-  static async validationCheckById(_id: string, tokenId: string): Promise<boolean> {
-    const todoName = await TodoDao.getUserNameById(_id)
-    return (tokenId === todoName)
+  static async validationCheckById(_id: string, tokenNickname: string): Promise<boolean> {
+    const todoNickname = await TodoDao.getUserNicknameById(_id)
+    return (tokenNickname === todoNickname)
   }
 
   static async toggleTodo(_id: string, tokenId: string): Promise<boolean> {
@@ -53,8 +43,8 @@ export default class TodoService {
     return await TodoDao.toggleTodo(_id, type)
   }
 
-  static async updateTodo(_id: string, tokenId: string, newComment: string): Promise<boolean> {
-    if (!await this.validationCheckById(_id, tokenId)) throw new ApolloError("Abnormal Active Detected!")
+  static async updateTodo(_id: string, tokenNickname: string, newComment: string): Promise<boolean> {
+    if (!await this.validationCheckById(_id, tokenNickname)) throw new ApolloError("Abnormal Active Detected!")
     return await TodoDao.updateTodo(_id, newComment)
   }
 }

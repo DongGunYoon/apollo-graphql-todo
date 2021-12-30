@@ -5,12 +5,21 @@ import { TodoModel } from "../models/todo"
 
 @Dao(TodoModel)
 class TodoDao {
-  async getTodosByName(name: string): Promise<Todo[]>{
-    return await TodoModel.find({name: name})
+  async getTodosByName(nickname: string): Promise<Todo[]>{
+    return await TodoModel.find({nickname: nickname})
   }
 
-  async getUserNameById(_id: string): Promise<string | undefined> {
-    return await TodoModel.findOne({"_id": _id}).then(res => res?.name)
+  async getAllCommentsAndCompletedOfNickname(nickname: string): Promise<[string, boolean][]> {
+    const result = await TodoModel.find({"nickname": nickname}, {
+      comment:1,
+      completed:1
+    })
+
+    return result.map(res => [res.comment, res.completed])
+  }
+
+  async getUserNicknameById(_id: string): Promise<string | undefined> {
+    return await TodoModel.findOne({"_id": _id}).then(res => res?.nickname)
   }
 
   createDefaultTodo(input: CreateTodoInput): Todo {
@@ -22,7 +31,7 @@ class TodoDao {
   }
 
   async validationCheckById(_id: string, tokenName: string): Promise<boolean> {
-    const todoName = (await TodoModel.findOne({_id: _id}))?.name
+    const todoName = (await TodoModel.findOne({_id: _id}))?.nickname
     return (tokenName === todoName)
   }
 

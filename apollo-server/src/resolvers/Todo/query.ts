@@ -1,5 +1,4 @@
 import {
-  Arg,
   Ctx,
   Query,
   Resolver,
@@ -8,7 +7,6 @@ import {
 import Todo from "../../entity/Todo"
 import Auth from "../../middleware/auth"
 import TodoDao from "../../databases/todoapp/dao/TodoDao"
-import TodoService from "@/services/todo/TodoService"
 
 @Resolver()
 export default class TodoQueryResolver {
@@ -16,12 +14,13 @@ export default class TodoQueryResolver {
   @Query(() => [Todo])
   async getTodos(
   @Ctx() context: any) {
-    return await TodoDao.getTodosByName(context.user.userId)
+    return await TodoDao.getTodosByName(context.user.nickname)
   }
 
+  @UseMiddleware(Auth())
   @Query(() => [String])
-  async getUsersNickname(
-  @Arg("input", () => String) input: string) {
-    return await TodoService.getUsersNickname(input)
+  getNameAndNickname(
+  @Ctx() context: any) {
+    return [context.user.userId, context.user.nickname]
   }
 }

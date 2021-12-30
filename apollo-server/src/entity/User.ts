@@ -28,4 +28,25 @@ export default class User {
       required: true
     })
     nickname!: string
+
+    @Field(() => [String], {nullable: true})
+    @Prop({
+      type: [String],
+      required: false
+    })
+    friendList?: string[]
+    
+    @Field(() => [String], {nullable: true})
+    @Prop({
+      type: [String],
+      required: false
+    })
+    sentFriendRequestList?: string[]
+    
+    @Field(() => [String], {nullable: true})
+    @Prop({
+      type: [String],
+      required: false
+    })
+    receivedFriendRequestList?: string[]
 }
