@@ -1,7 +1,7 @@
 <template>
 <div>
 <div class="home-wrapper">
-  <div class="welcome-title">Welcome {{ name }}!</div>
+  <div class="welcome-title">Welcome {{ nickname }}!</div>
   <add-todo @add-todo="addTodo"></add-todo>
   <ul class="todo-list">
     <li :key="id" v-for="(todo, id) in filteredTodos">
@@ -41,6 +41,7 @@ export default {
       showType: 'all',
       matchedNicknames: [],
       name: '',
+      nickname: '',
       edit:  {
         _id: '',
         newComment: '',
@@ -58,29 +59,46 @@ export default {
       );
     }
   
-    this.endpoint = `https://todo-api.why.auoi.net/todo`;
+    // this.endpoint = `https://todo-api.why.auoi.net/todo`;
+    this.endpoint = `http://localhost:3000/todo`;
     this.token = localStorage.getItem('token');
-    this.name = localStorage.getItem('name');
-    this.header = {headers: {"Authorization": localStorage.getItem('token')}}
+    this.header = {headers: {"Authorization": this.token}}
 
     const graphQLClient = new GraphQLClient(this.endpoint, this.header);
 
     try {
-      const todos = await graphQLClient.request(
+      await graphQLClient.request(
+      gql`query {getNameAndNickname}`).then(res => {
+        this.name = res.getNameAndNickname[0]
+        this.nickname = res.getNameAndNickname[1]
+        })
+    }
+    catch (err) {
+      this.unauthorized()
+    }
+
+    const userInfo = await graphQLClient.request(
+      gql`query {getNameAndNickname}`)
+    
+    this.name = userInfo.getNameAndNickname[0]
+    this.nickname = userInfo.getNameAndNickname[1]
+
+    localStorage.setItem("nickname", this.nickname)
+    
+    try {
+      await graphQLClient.request(
         gql`query {
             getTodos{
               _id
-              name
+              nickname
               comment
               completed
             }
           }`
-      )
-      this.todos = todos.getTodos
+      ).then(res=> this.todos = res.getTodos)
     }
     catch (err) {
-      alert("UnAuthorized!")
-      this.$router.push({path: 'login'})
+      this.unauthorized()
     }
 
     await getPosition()
@@ -130,13 +148,13 @@ export default {
             gql`mutation {
               addTodo(input: {
                 comment: "${comment}"
-                name: "${localStorage.getItem('name')}"
+                nickname: "${this.nickname}"
                 latitude: "${this.location.latitude}"
                 longitude: "${this.location.longitude}"
                 }) 
               {
             _id
-            name
+            nickname
             completed
             comment
             address
@@ -201,13 +219,13 @@ export default {
     unauthorized() {
       localStorage.clear();
       this.$router.push({path: 'login'})
-      alert("비정상적인 움직임이 감지되었습니다.")
+      alert("다시 로그인 부탁드립니다.")
     }
   }
 };
 </script>
 
-<style>
+<style scoped>
 
 body {
   font-family: 'orbitron';
@@ -287,23 +305,6 @@ body {
 
 .hide {
   display: none;
-}
-
-.userSearch {
-    width: 60%;
-    margin: 10px auto;
-}
-
-#searchInput {
-  font-family: 'orbitron';
-  font-size: 24px;
-  width: 100%;
-  padding: 16px 16px 16px 60px;
-  border-radius: 10px;
-  border: 0.1px solid grey;
-  background: rgba(0, 0, 0, 0.003);
-  box-shadow: inset 0 -2px 1px rgb(0 0 0 / 20%);
-  margin-bottom: 1.5em;
 }
 
 </style>

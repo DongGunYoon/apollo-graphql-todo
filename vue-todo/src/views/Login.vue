@@ -105,7 +105,7 @@
               >Pw Does Not Match</span
             >
             <span class="error-message" :class="this.errorMsg.signUpDuplicate ? '' : 'hide'"
-              >Duplicate User Name Detected</span
+              >Duplicate User Name or Nickname Detected</span
             >
           </div>
 
@@ -187,8 +187,8 @@ export default {
             }`)
         if (logInResult.getLogInResult === "FAIL") this.errorMsg.logInFail = true
         else {
+          localStorage.clear()
           localStorage.setItem('token', logInResult.getLogInResult);
-          localStorage.setItem('name', userId)
           this.$router.push({path: 'home'})
         }
       },

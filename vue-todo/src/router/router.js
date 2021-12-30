@@ -17,6 +17,7 @@ const routes = [
     path: '/friend',
     name: 'friend',
     component: () => import('@/views/Friend'),
+    beforeEnter: requireAuth()
   },
   {
     path: '/',
